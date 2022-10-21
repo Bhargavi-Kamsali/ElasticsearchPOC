@@ -6,6 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -50,20 +53,20 @@ public class CustomerController {
     }
 
     @PostMapping("/saveCustomer")
-    public int saveCustomer(@RequestBody List<Customer> customers){
-        customerRepository.saveAll(customers);
+    public Flux<Customer> saveCustomer(@RequestBody Iterable<Customer> customers){
+        Flux<Customer> custs=customerRepository.saveAll(customers);
         logger.info("Customers saved into ES}");
-        return customers.size();
+        return custs;
     }
 
     @GetMapping("/findAll")
-    public Iterable<Customer> findAllCustomers(){
+    public Flux<Customer> findAllCustomers(){
         logger.info("Displaying all saved  customers list}");
         return  customerRepository.findAll();
     }
 
     @GetMapping("/findAll/{firstName}")
-    public List<Customer> findByFirstName(@PathVariable String firstName){
+    public Mono<Customer> findByFirstName(@PathVariable String firstName){
         return  customerRepository.findByFirstname(firstName);
     }
 

@@ -7,10 +7,11 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 import org.springframework.data.elasticsearch.repository.ReactiveElasticsearchRepository;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 
-public interface CustomerRepository extends ElasticsearchRepository<Customer, String> {
-
-    List<Customer> findByFirstname(String firstName);
+public interface CustomerRepository extends ReactiveElasticsearchRepository<Customer, String> {
+    Mono<Customer> findByFirstname(String firstName);
 
 }
